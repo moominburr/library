@@ -1,0 +1,144 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: monospace;
+  /* overflow-x: hidden; */
+}
+
+h1 {
+  font-size: 4em;
+  color: #49868c;
+}
+.layout {
+  width: 100vw;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "heading heading heading heading"
+    "container container container infoStore";
+}
+.info-storage {
+  grid-area: infoStore;
+  min-height: 70vh;
+  width: 25vw;
+}
+.container {
+  min-height: 70vh;
+  width: 75vw;
+  display: flex;
+  flex-wrap: wrap;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 4em auto 1em auto;
+  grid-area: container;
+}
+.card {
+  width: 25vw;
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 2em 2em;
+  padding: 1em 2em;
+  border: 3px solid#49868C;
+  border-radius: 10px;
+  background-color: #a0d9d9;
+  line-height: 20px;
+}
+.bold {
+  font-weight: bold;
+}
+.heading {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+  grid-area: heading;
+}
+.add-new-button,
+.submit-button {
+  background-color: white;
+  padding: 1em 2em;
+  border-radius: 10px;
+  border: 1px solid black;
+  cursor: pointer;
+  margin: 1em 0em 2em 0em;
+}
+.add-new-button {
+  transition: all 0.1s ease;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  left: -100%;
+  transition: all 0.3s ease;
+  background-color: aliceblue;
+}
+.close-form {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  background-color: aliceblue;
+  font-size: 4em;
+  border: none;
+  cursor: pointer;
+}
+.form-active {
+  top: 0;
+  left: 0;
+}
+.button-inactive {
+  display: none;
+}
+.form-p {
+  font-size: 2em;
+  padding: 2em;
+}
+.title,
+.text,
+.pages,
+.read,
+.submit {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2em;
+}
+#title-input,
+#author-input {
+  padding: 0.5em 0em;
+  width: 50%;
+}
+label {
+  margin: 1em;
+}
+
+.remove-button,
+.read-button {
+  padding: 0.5em 1em;
+  background-color: white;
+  border-radius: 10px;
+  margin: 0.5em 1em;
+}
+.remove-button {
+  border: 1px solid #a62d2d;
+}
+.read-button {
+  border: 1px solid #d9b166;
+}
+.button-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
