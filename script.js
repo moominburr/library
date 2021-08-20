@@ -8,8 +8,11 @@ const pagesInput = document.querySelector("#pages-input");
 const readInput = document.querySelector("#read");
 const submitBtn = document.querySelector(".submit-button");
 const closeFormBtn = document.querySelector(".close-form");
+const storage = window.localStorage;
 let bookCounter = 0;
 
+
+//Data structures
 function Book(id, title, author, pages, read) {
   this.id = id;
   this.title = title;
@@ -27,6 +30,14 @@ function Book(id, title, author, pages, read) {
     }
   };
 }
+
+//Event listeners
+submitBtn.addEventListener("click", submitNewBook);
+addNewBtn.addEventListener("click", displayForm);
+closeFormBtn.addEventListener("click", displayForm);
+form.addEventListener("transitionend", formHandler);
+window.addEventListener('load', onLoad);
+
 function addBookToLibrary(title, author, pages, read) {
   let inLibrary = false;
   let checkLibrary = (title, author) => {
@@ -48,56 +59,53 @@ function addBookToLibrary(title, author, pages, read) {
   let id = myLibrary.length;
   newBook = new Book(id, title, author, pages, read);
   myLibrary.push(newBook);
-  container.innerHTML = "";
-  myLibrary.forEach((book) => {
-    const card = document.createElement("div");
-    card.classList.add("card");
-    card.setAttribute("data-id", book.id);
-    for (let prop in book) {
-      if (prop !== "id" && prop !== "info" && prop !== "toggleReadStatus") {
-        const p = document.createElement("p");
-        if (book[prop] === false) {
-          p.textContent = `Read Status: Unread`;
-        } else if (book[prop] === true) {
-          p.textContent = `Read Status: Read`;
-        } else {
-          let propName = prop[0].toUpperCase() + prop.substring(1);
-          p.textContent = `${propName}: ${book[prop]}`;
-          if (prop === "title") {
-            p.classList.add("bold");
-          }
-        }
-        card.appendChild(p);
-      }
-    }
-    const readBtn = document.createElement("button");
-    readBtn.textContent = `${book.read ? "Unread" : "Read"} `;
-    readBtn.classList.add("read-button");
-    readBtn.addEventListener("click", invokeToggleReadStatus);
-    const removeBtn = document.createElement("button");
-    removeBtn.textContent = "Remove";
-    removeBtn.addEventListener("click", removeBook);
-    removeBtn.classList.add("remove-button");
-    const buttonDiv = document.createElement("div");
-    buttonDiv.classList.add("button-div");
-    buttonDiv.appendChild(readBtn);
-    buttonDiv.appendChild(removeBtn);
-    card.appendChild(buttonDiv);
-    container.appendChild(card);
-  });
+  createLibrary();
 }
 
-addBookToLibrary("The Hobbit", "J. R. R. Tolkien", 295, false);
-addBookToLibrary("Rivers of London", "Ben Aaronovitch", 392, true);
-addBookToLibrary("Harry Potter and the Philospher's Stone", "J.K Rowling", 223, true);
-addBookToLibrary("The Eyre Affair", "Jasper Fforde", 400, true);
-addBookToLibrary("The Advenutures of Sherlock Holmes", "Arthur Conan Doyle", 307, false);
+function createLibrary(){
+    container.innerHTML = "";
+    myLibrary.forEach((book) => {
+      const card = document.createElement("div");
+      card.classList.add("card");
+      card.setAttribute("data-id", book.id);
+      for (let prop in book) {
+        if (prop !== "id" && prop !== "info" && prop !== "toggleReadStatus") {
+          const p = document.createElement("p");
+          if (book[prop] === false) {
+            p.textContent = `Read Status: Unread`;
+          } else if (book[prop] === true) {
+            p.textContent = `Read Status: Read`;
+          } else {
+            let propName = prop[0].toUpperCase() + prop.substring(1);
+            p.textContent = `${propName}: ${book[prop]}`;
+            if (prop === "title") {
+              p.classList.add("bold");
+            }
+          }
+          card.appendChild(p);
+        }
+      }
+      const readBtn = document.createElement("button");
+      readBtn.textContent = `${book.read ? "Unread" : "Read"} `;
+      readBtn.classList.add("read-button");
+      readBtn.addEventListener("click", invokeToggleReadStatus);
+      const removeBtn = document.createElement("button");
+      removeBtn.textContent = "Remove";
+      removeBtn.addEventListener("click", removeBook);
+      removeBtn.classList.add("remove-button");
+      const buttonDiv = document.createElement("div");
+      buttonDiv.classList.add("button-div");
+      buttonDiv.appendChild(readBtn);
+      buttonDiv.appendChild(removeBtn);
+      card.appendChild(buttonDiv);
+      container.appendChild(card);
+    });
+    setBooks();
+}
 
-//Event listeners
-submitBtn.addEventListener("click", submitNewBook);
-addNewBtn.addEventListener("click", displayForm);
-closeFormBtn.addEventListener("click", displayForm);
-form.addEventListener("transitionend", formHandler);
+function setBooks(){
+    storage.setItem('books', JSON.stringify(myLibrary));
+}
 
 function submitNewBook() {
   let title = titleInput.value;
@@ -129,6 +137,9 @@ function removeBook(e) {
   let el = e.target.parentElement.parentElement;
   el.remove();
   let book = myLibrary.splice(elId, 1);
+  createLibrary();
+  console.log(myLibrary);
+  setBooks();
 }
 
 function invokeToggleReadStatus(e) {
@@ -145,4 +156,9 @@ function invokeToggleReadStatus(e) {
 function formHandler() {
   if (form.classList.contains("form-active")) return;
   addNewBtn.classList.remove("button-inactive");
+}
+
+function onLoad(){
+    myLibrary = JSON.parse(storage.getItem('books'));
+    createLibrary();
 }
