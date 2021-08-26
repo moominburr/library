@@ -21,9 +21,9 @@ class Book {
         this.pages = pages;
         this.read = read;
     }
-  info = () => {
-    return `${title} by ${author}, ${pages} pages, ${read ? "read" : "not yet read"}`;
-  };
+//   info() {
+//     return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read ? "read" : "not yet read"}`;
+//   };
   toggleReadStatus = () => {
     if (this.read) {
       this.read = false;
