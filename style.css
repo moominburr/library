@@ -48,6 +48,7 @@ h1 {
   border-radius: 10px;
   background-color: #a0d9d9;
   line-height: 20px;
+  text-align: center;
 }
 .bold {
   font-weight: bold;

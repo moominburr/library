@@ -13,16 +13,18 @@ let bookCounter = 0;
 
 
 //Data structures
-function Book(id, title, author, pages, read) {
-  this.id = id;
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = read;
-  this.info = function () {
+class Book {
+    constructor(id, title, author, pages, read){
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
+    }
+  info = () => {
     return `${title} by ${author}, ${pages} pages, ${read ? "read" : "not yet read"}`;
   };
-  this.toggleReadStatus = function () {
+  toggleReadStatus = () => {
     if (this.read) {
       this.read = false;
     } else {
@@ -144,7 +146,6 @@ function removeBook(e) {
 
 function invokeToggleReadStatus(e) {
   let elId = e.target.parentElement.parentElement.dataset.id;
-  console.log(e.target.parentElement.parentElement.dataset.id);
   let status = myLibrary[elId].read;
   myLibrary[elId].toggleReadStatus();
   status = myLibrary[elId].read;
